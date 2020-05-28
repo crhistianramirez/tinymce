@@ -7,27 +7,29 @@
 
 import { HTMLElement } from '@ephox/dom-globals';
 import { Arr, Cell, Option } from '@ephox/katamari';
-import { Element } from '@ephox/sugar';
+import { Element, Elements } from '@ephox/sugar';
 import Editor from 'tinymce/core/api/Editor';
 import { insertTableWithDataValidation } from '../actions/InsertTable';
 import { ResizeHandler } from '../actions/ResizeHandler';
 import { SelectionTargets } from '../selection/SelectionTargets';
 
-const getClipboardRows = (clipboardRows: Cell<Option<Element[]>>): HTMLElement[] => clipboardRows.get().fold(
+const getClipboardElements = (clipboardElems: Cell<Option<Element[]>>): HTMLElement[] => clipboardElems.get().fold(
   () => [],
-  (rows) => Arr.map(rows, (row) => row.dom())
+  (elems) => Arr.map(elems, (e) => e.dom())
 );
 
-const setClipboardRows = (rows: HTMLElement[], clipboardRows) => {
-  const sugarRows = Arr.map(rows, Element.fromDom);
-  clipboardRows.set(Option.from(sugarRows));
+const setClipboardElements = (elems: HTMLElement[], clipboardElems: Cell<Option<Element[]>>) => {
+  const elmsOpt = elems.length > 0 ? Option.some(Elements.fromDom(elems)) : Option.none<Element[]>();
+  clipboardElems.set(elmsOpt);
 };
 
-const getApi = (editor: Editor, clipboardRows: Cell<Option<Element[]>>, resizeHandler: ResizeHandler, selectionTargets: SelectionTargets) => ({
+const getApi = (editor: Editor, clipboardRows: Cell<Option<Element[]>>, clipboardCols: Cell<Option<Element[]>>, resizeHandler: ResizeHandler, selectionTargets: SelectionTargets) => ({
   insertTable: (columns: number, rows: number, options: Record<string, number> = {}) =>
     insertTableWithDataValidation(editor, rows, columns, options, 'Invalid values for insertTable - rows and columns values are required to insert a table.'),
-  setClipboardRows: (rows: HTMLElement[]) => setClipboardRows(rows, clipboardRows),
-  getClipboardRows: () => getClipboardRows(clipboardRows),
+  setClipboardRows: (rows: HTMLElement[]) => setClipboardElements(rows, clipboardRows),
+  getClipboardRows: () => getClipboardElements(clipboardRows),
+  setClipboardCols: (cols: HTMLElement[]) => setClipboardElements(cols, clipboardCols),
+  getClipboardCols: () => getClipboardElements(clipboardCols),
   resizeHandler,
   selectionTargets
 });

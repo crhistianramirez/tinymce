@@ -132,6 +132,34 @@ const addButtons = (editor: Editor, selectionTargets: SelectionTargets) => {
     onSetup: selectionTargets.onSetupCellOrRow
   });
 
+  editor.ui.registry.addButton('tablecutcol', {
+    tooltip: 'Cut column',
+    onAction: cmd('mceTableCutCol'),
+    icon: 'temporary-placeholder',
+    onSetup: selectionTargets.onSetupCellOrRow
+  });
+
+  editor.ui.registry.addButton('tablecopycol', {
+    tooltip: 'Copy column',
+    onAction: cmd('mceTableCopyCol'),
+    icon: 'temporary-placeholder',
+    onSetup: selectionTargets.onSetupCellOrRow
+  });
+
+  editor.ui.registry.addButton('tablepastecolbefore', {
+    tooltip: 'Paste column before',
+    onAction: cmd('mceTablePasteColBefore'),
+    icon: 'temporary-placeholder',
+    onSetup: selectionTargets.onSetupCellOrRow
+  });
+
+  editor.ui.registry.addButton('tablepastecolafter', {
+    tooltip: 'Paste column after',
+    onAction: cmd('mceTablePasteColAfter'),
+    icon: 'temporary-placeholder',
+    onSetup: selectionTargets.onSetupCellOrRow
+  });
+
   editor.ui.registry.addButton('tableinsertdialog', {
     tooltip: 'Insert table',
     onAction: cmd('mceInsertTable'),

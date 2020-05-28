@@ -107,10 +107,31 @@ const addMenuItems = (editor: Editor, selectionTargets: SelectionTargets) => {
     onSetup: selectionTargets.onSetupCellOrRow
   });
 
+  editor.ui.registry.addMenuItem('tablecutcol', {
+    text: 'Cut column',
+    onAction: cmd('mceTableCutCol'),
+    onSetup: selectionTargets.onSetupCellOrRow
+  });
+  editor.ui.registry.addMenuItem('tablecopycol', {
+    text: 'Copy column',
+    onAction: cmd('mceTableCopyCol'),
+    onSetup: selectionTargets.onSetupCellOrRow
+  });
+  editor.ui.registry.addMenuItem('tablepastecolbefore', {
+    text: 'Paste column before',
+    onAction: cmd('mceTablePasteColBefore'),
+    onSetup: selectionTargets.onSetupCellOrRow
+  });
+  editor.ui.registry.addMenuItem('tablepastecolafter', {
+    text: 'Paste column after',
+    onAction: cmd('mceTablePasteColAfter'),
+    onSetup: selectionTargets.onSetupCellOrRow
+  });
+
   const column: Menu.NestedMenuItemApi = {
     type: 'nestedmenuitem',
     text: 'Column',
-    getSubmenuItems: () => 'tableinsertcolumnbefore tableinsertcolumnafter tabledeletecolumn'
+    getSubmenuItems: () => 'tableinsertcolumnbefore tableinsertcolumnafter tabledeletecolumn | tablecutcol tablecopycol tablepastecolbefore tablepastecolafter'
   };
 
   editor.ui.registry.addMenuItem('tablecellprops', {

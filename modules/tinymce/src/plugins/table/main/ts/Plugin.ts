@@ -5,14 +5,17 @@
  * For commercial licenses see https://www.tiny.cloud/
  */
 
-import { Cell, Option } from '@ephox/katamari';
 import { KeyboardEvent } from '@ephox/dom-globals';
+import { Cell, Option } from '@ephox/katamari';
+import { Element } from '@ephox/sugar';
 import Editor from 'tinymce/core/api/Editor';
 import PluginManager from 'tinymce/core/api/PluginManager';
 import * as Clipboard from './actions/Clipboard';
-import { TableActions } from './actions/TableActions';
-import * as Commands from './api/Commands';
 import { getResizeHandler } from './actions/ResizeHandler';
+import { TableActions } from './actions/TableActions';
+import { getApi } from './api/Api';
+import * as Commands from './api/Commands';
+import { hasTabNavigation } from './api/Settings';
 import * as TabContext from './queries/TabContext';
 import CellSelection from './selection/CellSelection';
 import * as Ephemera from './selection/Ephemera';
@@ -20,9 +23,6 @@ import { Selections } from './selection/Selections';
 import { getSelectionTargets } from './selection/SelectionTargets';
 import * as Buttons from './ui/Buttons';
 import * as MenuItems from './ui/MenuItems';
-import { hasTabNavigation } from './api/Settings';
-import { getApi } from './api/Api';
-import { Element } from '@ephox/sugar';
 
 function Plugin(editor: Editor) {
   const selections = Selections(editor);
@@ -55,7 +55,7 @@ function Plugin(editor: Editor) {
     resizeHandler.destroy();
   });
 
-  return getApi(editor, clipboardRows, resizeHandler, selectionTargets);
+  return getApi(editor, clipboardRows, clipboardCols, resizeHandler, selectionTargets);
 }
 
 export default function () {
